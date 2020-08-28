@@ -107,4 +107,18 @@ Our last task in this question was to rotate the image by $30^{\circ}$ in the cl
     \caption{Image Rotation by 30^{\circ}}
   \label{fig:7}
 \end{figure}
+
+\clearpage
+
+\subsection*{Part G}
+The main file myMainScript.m is divided into 6 parts. 
+\begin{itemize}
+    \item Part A (Image Shrinking)- It contains a simple function, myShrinkImageByFactorD, which just takes the function (image matrix) and shrinking factor d. We shrunk the image size by a factor of d along each dimension using image sub-sampling by sampling / selecting every d-th pixel along the rows and columns. 
+    \item Part B (Bilinear Interpolation)- It contains the function myBilinearInterpolation which takes four original image points, a point and area and then calculates the function at the given point using the image points.
+    \item Part C (Nearest Neighbor Interpolation)- It contains the function myNearestNeighborInterpolation which takes four original image points, a point and then calculates the image point nearest to the given point and assigns it this value. 
+    \item Part D (Bicubic Interpolation)- We first calculate the first derivatives w.r.t. x and y and mixed second derivative for the image grid using difference method. Now we pass these matrices along with the image value, the point at which function value is required and the matrix A\_inv(a constant matrix). It then calculates the value at the given point using the bicubic formula.
+    \item Part E (Interpolation Comparison)- It uses the previously defined function to generate a small patch of image to compare the differences in the interpolation techniques.
+    \item Part F (Image Rotation)- It contains the function myImageRotation which takes four original image points, a point and then bilinearly interpolates to get the new image grid.
+\end{itemize}
+
 \end{document}
