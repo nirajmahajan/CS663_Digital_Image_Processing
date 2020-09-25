@@ -8,6 +8,7 @@ tic;
 storedStructure = load("../data/barbara.mat");
 input_img1 = storedStructure.imageOrig;
 [rows cols]=size(input_img1);
+rng('default');% Setting seed for the random generator so as to get a constant error everytime the code is run
 noise = 5*randn([rows cols]); %Additive gaussian noise with standard deviation set to 5(5% of intensity range)
 input_img1_noise=input_img1+noise;
 
@@ -16,7 +17,7 @@ padded_img1=padarray(input_img1_noise, [(win-1)/2 (win-1)/2], 0);
 [rows_pad cols_pad]=size(padded_img1);
 start=(win+1)/2;
 sigma_s=1.5;
-sigma_i=9.75;
+sigma_i=1.1*9.75;
 filtered_image1=zeros([rows cols]);
 
 for i=start:rows_pad-start+1
@@ -58,6 +59,7 @@ colorbar
 %% Grass Image
 input_img2 = double(imread("../data/grass.png"));
 [rows cols]=size(input_img2);
+rng('default');% Setting seed for the random generator so as to get a constant error everytime the code is run
 noise = 12.5*randn([rows cols]); %Additive gaussian noise with standard deviation set to 12.5(5% of intensity range)
 input_img2_noise=input_img2+noise;
 
@@ -65,7 +67,7 @@ win=3; %window of dimension 3*3
 padded_img2=padarray(input_img2_noise, [(win-1)/2 (win-1)/2], 0);
 [rows_pad cols_pad]=size(padded_img2);
 start=(win+1)/2;
-sigma_s=1.03;
+sigma_s=0.95;
 sigma_i=42;
 filtered_image2=zeros([rows cols]);
 
@@ -107,6 +109,7 @@ colorbar
 %% HoneyComb Image
 input_img3 = double(imread("../data/honeyCombReal.png"));
 [rows cols]=size(input_img3);
+rng('default'); % Setting seed for the random generator so as to get a constant error everytime the code is run
 noise = 12.75*randn([rows cols]); %Additive gaussian noise with standard deviation set to 12.75(5% of intensity range)
 input_img3_noise=input_img3+noise;
 
@@ -115,7 +118,7 @@ padded_img3=padarray(input_img3_noise, [(win-1)/2 (win-1)/2], 0);
 [rows_pad cols_pad]=size(padded_img3);
 start=(win+1)/2;
 sigma_s=1.25;
-sigma_i=40;
+sigma_i=1.1*40;
 filtered_image3=zeros([rows cols]);
 
 for i=start:rows_pad-start+1
@@ -171,7 +174,7 @@ colorbar
 gaussian_filter2=zeros([3 3]);
 for i=1:3
         for j=1:3
-            gaussian_filter2(i,j)=255*exp(-((i-2)^2+(j-2)^2)/(2*1.03^2));
+            gaussian_filter2(i,j)=255*exp(-((i-2)^2+(j-2)^2)/(2*0.95^2));
         end
 end
 figure(5), imagesc(single(gaussian_filter2)); 
