@@ -52,42 +52,15 @@ function [O] = myPatchBasedFiltering(I, h_sigma, mask)
             neighbour_cols = im2col(neighborhood_patch, [patch_size,patch_size]);
             neighbour_cols = neighbour_cols(logical_mask,:);
             neighbour_cols = neighbour_cols.*temp_mask;
-            mid = (window_size*window_size-1)/2;
-            neighbour_cols(:,mid) = [];
-            nbrs(mid) = [];
+%             mid = (window_size*window_size-1)/2;
+%             neighbour_cols(:,mid) = [];
+%             nbrs(mid) = [];
             
             weights = gaussianKernel(neighbour_cols, target_patch,h_sigma);
             
             weights = weights/ sum(weights(:));
             
             O(ri,ci) = sum(weights(:).* nbrs);
-            
-%             % Loop over the neighborhood
-%             for nri = nr_start:nr_end
-%                 for nci = nc_start:nc_end
-%                     % dont calculate the weight with self
-%                     if (nri == ri) && (nci == ci)
-%                         continue
-%                     end
-%                     % Extract the variable patch 
-%                     vr_start = nri - halfpatch;
-%                     vc_start = nci - halfpatch;
-%                     vr_end = nri + halfpatch;
-%                     vc_end = nci + halfpatch;
-%                     variable_patch = I(vr_start:vr_end,vc_start:vc_end);
-%                     % overlay logical mask
-%                     variable_patch = variable_patch(logical_mask);
-%                     % overlay gaussian mask
-%                     variable_patch = variable_patch .*temp_mask;
-%                     
-%                     weight = gaussianKernel(variable_patch, target_patch, h_sigma);
-%                     
-%                     num = num + I(ri+padsize,ci+padsize) * weight;
-%                     den = den + weight;                    
-%                 end
-%             end
-            
-%             O(ri,ci) = num/den;
             
         end
     end
