@@ -20,12 +20,12 @@ toc;
 
 tic;
 im = double(imread('../data/grass.png'));
-h_sigma = 1.81;
+h_sigma = 1.8527;
 workOnImage(im, 'Grass', 3, h_sigma, mask);
 toc;
 
 tic;
 im = double(imread('../data/honeyCombReal.png'));
-h_sigma = 2.1;
+h_sigma = 2.0842;
 workOnImage(im, 'Honeycomb', 4, h_sigma, mask);
 toc;

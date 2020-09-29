@@ -30,11 +30,11 @@ function workOnImage(I, name, fig, h_sigma, mask)
     rmsd_opt = rmsd(I,filtered);
     fprintf(sprintf('RMSD at optimal sigma = %f\n',rmsd_opt));
     
-    filtered_up = myPatchBasedFiltering(corrupted, h_sigma*1.1, mask);
-    rmsd_up = rmsd(I,filtered_up);
-    fprintf(sprintf('RMSD at 1.1 * optimal sigma = %f\n',rmsd_up));
-    filtered_down = myPatchBasedFiltering(corrupted, h_sigma*0.9, mask);
-    rmsd_down = rmsd(I,filtered_down);
-    fprintf(sprintf('RMSD at 0.9 * optimal sigma = %f\n',rmsd_down));
+%     filtered_up = myPatchBasedFiltering(corrupted, h_sigma*1.1, mask);
+%     rmsd_up = rmsd(I,filtered_up);
+%     fprintf(sprintf('RMSD at 1.1 * optimal sigma = %f\n',rmsd_up));
+%     filtered_down = myPatchBasedFiltering(corrupted, h_sigma*0.9, mask);
+%     rmsd_down = rmsd(I,filtered_down);
+%     fprintf(sprintf('RMSD at 0.9 * optimal sigma = %f\n',rmsd_down));
 end
 

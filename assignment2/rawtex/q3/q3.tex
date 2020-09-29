@@ -37,8 +37,8 @@ We used a gaussian mask of $\sigma$ = 1.5 to make the patches isotropic.
 The RMSD values are:
 \begin{itemize}
 	\item RMSD$_{\sigma}\;\;\;$  = 2.614193
-	\item RMSD$_{0.9\sigma}$ = 2.669242
-	\item RMSD$_{1.1\sigma}$ = 2.636064
+	\item RMSD$_{0.9\sigma}$ = 2.636064
+	\item RMSD$_{1.1\sigma}$ = 2.669242
 \end{itemize}
 \begin{figure}[h]
     \centering
@@ -65,12 +65,12 @@ The RMSD values are:
 \end{figure}
 \newpage
 \subsection*{3.3 Patch Based Filtering on grass.png}
-\noindent The optimal filtering for barbara.png was attained at $\sigma_{grass} = 1.81$. \\
+\noindent The optimal filtering for barbara.png was attained at $\sigma_{grass} = 1.8527$. \\
 The RMSD values are:
 \begin{itemize}
-	\item RMSD$_{\sigma}\;\;\;$  = 7.265757
-	\item RMSD$_{0.9\sigma}$ = 7.303963
-	\item RMSD$_{1.1\sigma}$ = 7.520618
+	\item RMSD$_{\sigma}\;\;\;$  = 7.336307
+	\item RMSD$_{0.9\sigma}$ = 7.471906
+	\item RMSD$_{1.1\sigma}$ = 7.474340
 \end{itemize}
 \begin{figure}[h]
     \centering
@@ -97,12 +97,12 @@ The RMSD values are:
 \end{figure}
 
 \subsection*{3.4 Patch Based Filtering on beehive.png}
-\noindent The optimal filtering for barbara.png was attained at $\sigma_{beehive} = 2.1$. \\
+\noindent The optimal filtering for barbara.png was attained at $\sigma_{beehive} = 2.0842$. \\
 The RMSD values are:
 \begin{itemize}
-	\item RMSD$_{\sigma}\;\;\;$  = 7.432849
-	\item RMSD$_{0.9\sigma}$ = 7.578823
-	\item RMSD$_{1.1\sigma}$ = 7.559053
+	\item RMSD$_{\sigma}\;\;\;$  = 7.424229
+	\item RMSD$_{0.9\sigma}$ = 7.545112
+	\item RMSD$_{1.1\sigma}$ = 7.557518
 \end{itemize}
 \begin{figure}[h]
     \centering
@@ -127,5 +127,12 @@ The RMSD values are:
 	    \label{fig:3.4(c)}
     \end{minipage}
 \end{figure}
+\newpage
+\subsection*{3.4 Usage of code}
+\begin{itemize}
+\item Running the \textbf{myMainScript.m} file will plot the original, corrupted and filtered images for all three test cases. This takes less than 5 minutes and hence wait bar is not shown.
+\item By default, the 0.9$\sigma$ and 1.1$\sigma$  RMSD values will not be printed. In order to print these values, uncomment line 33 to 38 in \textbf{workOnImage.m}. Note that this will take 3 times the time required to run just for the optimal values and will exceed 5 minutes.
+\item I have not scaled each image to [0,1] but simply converted the original pixel values to double and applied patch based filtering. This method is equivalent to scaling the image to [0,1], applying patch based filtering, and then rescaling to plot it. The quality of the filtered image will be the same. Just the $\sigma$ values and RMSD values will be scaled appropriately.\\ TL;DR: The RMSD values obtained by us will appear higher in magnitude as compared to those who have scaled the image to [0,1] but on scaling, the RMSD values are in the same range [let's hope better :)], and the filtered image quality is also the same [again, let's hope better :)]
+\end{itemize}
 
 \end{document}
