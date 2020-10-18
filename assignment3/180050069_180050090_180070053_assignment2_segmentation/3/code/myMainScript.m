@@ -16,11 +16,4 @@ cutoff = 40;
 gaussian_sigma = 0.7;
 workOnImage(I, 'bird', 2, hi, lo, gaussian_sigma, cutoff);
 
-f = figure(23);
-imshow(I);
-title('Original Image')
-saveas(f, sprintf('../images/%s_original.png',name));
-pause(0.2);
-savefig(sprintf('../images/figs/%s_original.fig',name));
-
 toc;
