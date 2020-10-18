@@ -1,13 +1,9 @@
-function myMeanShiftSegmentation(img)
+function myMeanShiftSegmentation(img,scale,hr,hs,iter,lr,K,seed)
+    rng(seed);
     A = imread(img);
     B = imgaussfilt(A,1);
-    B = B(1:4:end,1:4:end,:);
+    B = B(1:scale:end,1:scale:end,:);
     [rows,columns] = size(B,[1 2]);
-    hs = 16;
-    hr = 8; %4
-    iter = 30;
-    lr = 32;
-    K = 10;
     F = zeros(rows,columns,5);
     F(:,:,1:3) = B;
     for i = 1:rows
@@ -18,7 +14,7 @@ function myMeanShiftSegmentation(img)
     end
     X = zeros(rows,columns,5);
     for it = 1:iter
-        % it
+%         it
         for i = 1:rows
             for j = 1:columns
                 X(:,:,1:3) = ((F(i,j,1:3)-F(:,:,1:3)).^2)./(2*hr*hr);
@@ -47,8 +43,7 @@ function myMeanShiftSegmentation(img)
     end
     
     B=F(:,:,1:3);
-    str = sprintf('after mean shift segmentation [hr=%.2f, hs=%.2f]', hr,hs);
     subplot(1,2,1), imshow(A), title('original')
-    subplot(1,2,2), imshow(mat2gray(B)), title(str)
-          save('../images/baboonColor.mat','B');
+    subplot(1,2,2), imshow(mat2gray(B)), title('after mean shift segmentation')
+%       save('../images/baboonColor.mat','B');
 end
