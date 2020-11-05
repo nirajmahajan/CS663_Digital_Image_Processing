@@ -3,23 +3,62 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
-\usepackage[fleqn]{amsmath}
-\usepackage{mathtools}
-\usepackage{tabto}
+\usepackage{amsmath}
 \usepackage{bm}
 \usepackage{graphicx}
-\graphicspath{{./images/}}
+\usepackage{subcaption}
 \usepackage[font=small,labelfont=bf]{caption}
  
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\small{Shaan Ul Haque(180070053)\\ Samarth Singh (180050090) \\ Niraj Mahajan (180050069)}}
-\lhead{CS-663 Assignment-4 : Question 2}
-\rfoot{Page 2.\thepage}
+\lhead{CS-663 Assignment-3 : Question 2}
+\rfoot{Page 1.\thepage}
  
 \begin{document}
 \vspace*{-22pt}
-\section*{Question 2}
-\subsection*{2.1 : Part A : }
+\section{Answer}
+We need to prove that after the eigen-vector corresponding to largest eigen-value is chosen the  next best choice is to choose the eigen-vector with second largest eigen value.
+Let \textbf{e}, be the eigen-vector with largest eigen-value. Let \textbf{f} be a unit vector perpendicular to \textbf{e}. Then according to question we want to minimize the cost function:
 
+\begin{align*}
+    J(\textbf{f}) = \sum_{i=1}^{N}||b_i\textbf{f} - (\textbf{x\textsubscript{i}}-\textbf{x} - a_i\textbf{e})||^2
+\end{align*}
+where, $a_i$ = $\textbf{e\textsuperscript{T}}$(\textbf{x\textsubscript{i}}-\textbf{x}); $b_i$ = $\textbf{f\textsuperscript{T}}$(\textbf{x\textsubscript{i}}-\textbf{x}); \textbf{x}=average value of \textbf{x\textsubscript{i}}
+\begin{flalign*}
+    &J(\textbf{f}) = \sum_{i=1}^{N}||b_i\textbf{f}||^2 + \sum_{i=1}^{N}||\textbf{x\textsubscript{i}}-\textbf{x} - a_i\textbf{e}||^2 - 2\sum_{i=1}^{N}b_i\textbf{f}^T(\textbf{x\textsubscript{i}}-\textbf{x} - a_i\textbf{e})& \\
+    &J(\textbf{f}) = \sum_{i=1}^{N}b_i^2 + \sum_{i=1}^{N}||\textbf{x\textsubscript{i}}-\textbf{x} - a_i\textbf{e}||^2 - 2\sum_{i=1}^{N}||b_i\textbf{f}||^2& \\
+    &\Longrightarrow J(\textbf{f}) = -\sum_{i=1}^{N}b_i^2 + \sum_{i=1}^{N}||\textbf{x\textsubscript{i}}-\textbf{x} - a_i\textbf{e}||^2&
+\end{flalign*}
+(Since, \textbf{f} is a unit vector, $\textbf{f}^T\textbf{e}=0,\    \textbf{f}^T(\textbf{x\textsubscript{i}}-\textbf{x})=b_i$)\\
+We want to minimize J(\textbf{f}) and to minimize it we should maximize the first term in the latter equation. 
+\begin{flalign*}
+    &\sum_{i=1}^{N}b_i^2 = \sum_{i=1}^{N}\textbf{f}^T(\textbf{x\textsubscript{i}}-\textbf{x})(\textbf{x\textsubscript{i}}-\textbf{x})^T\textbf{f}&
+\end{flalign*}
+We define $\sum_{i=1}^{N}(\textbf{x\textsubscript{i}}-\textbf{x})(\textbf{x\textsubscript{i}}-\textbf{x})^T = S$, where S = (N-1)C and C is the covariance matrix
+Thus the above equation becomes,
+\begin{flalign*}
+    &\sum_{i=1}^{N}b_i^2 = \textbf{f}^T\textbf{S}\textbf{f}&
+\end{flalign*}
+Thus, we need to maximize the above equation under the constraint, $\textbf{f}^T\textbf{f}=1$. Using Langrange's multiplier method we get,
+\begin{align*}
+    G(\textbf{f}) = \textbf{f}^T\textbf{S}\textbf{f} - \lambda(\textbf{f}^T\textbf{f}-1)\\
+     G'(\textbf{f}) = \textbf{S}\textbf{f} - \lambda\textbf{f} = 0\\
+    \Longrightarrow \textbf{S}\textbf{f} = \lambda\textbf{f}
+\end{align*}
+Thus, \textbf{f} needs to be an eigenvector of \textbf{S}. Rearranging the equation gives,
+\begin{equation*}
+    \textbf{f}^T\textbf{S}\textbf{f} = \lambda
+\end{equation*}
+Thus, to maximize $\textbf{f}^T\textbf{S}\textbf{f}$ we need maximum eigen-value. But we have already chosen the largest eigenvalue and its corresponding vector, thus the next best option is the second largest eigenvalue. Hence, proved that \textbf{f}, which is perpendicular to \textbf{e}, is the eigenvector corresponding to the second largest eigenvalue.
+\subsection{Another approach}
+We wanted the maximize $\textbf{f}^T\textbf{S}\textbf{f}$. A more intuitive solution which also gives a physical interpretation is as follows:
+\begin{equation*}
+    \textbf{f}^T\textbf{S}\textbf{f} = \textbf{f}^T(\textbf{S}\textbf{f})
+\end{equation*}
+Let $\textbf{f}^T\textbf{S} = \textbf{c}$, and the above equation becomes $\textbf{f}^T\textbf{c}$. The dot product of two vectors is maximized (under the constraint of constant magnitude of vectors) when angle between the two is $0^{\circ}$ and thus \textbf{c} should be $\alpha\textbf{f}$, where $\alpha$ is some constant. Written mathematically,
+\begin{equation*}
+    \textbf{S}\textbf{f} = \alpha \textbf{f}
+\end{equation*}
+Thus, \textbf{f} is an eigenvector of \textbf{S} matrix.
 \end{document}
