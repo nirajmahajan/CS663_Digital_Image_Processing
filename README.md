@@ -1,6 +1,6 @@
 # Digital Image Processing
 
-All code done as a part of CS663 offered by Prof. Suyash Awate at IIT Bombay, Fall 2020.
+All code done as a part of CS663 offered by Prof. Suyash Awate and Prof. Ajit Rajwade at IIT Bombay, Fall 2020.
 
 Team Members : 
 
