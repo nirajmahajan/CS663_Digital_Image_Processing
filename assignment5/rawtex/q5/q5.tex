@@ -51,15 +51,49 @@
 \section*{Question 5}
 \subsection*{1. Code}
 \begin{lstlisting}[language=Matlab]
-function [x,y] = getTranslation(I1,I2)
+function [x,y, impulse, visibility] = getTranslation(I1,I2)
+    [r1,c1] = size(I1);
+    [r2,c2] = size(I2);
+    assert(r1 == r2);
+    assert(c1 == c2);
+    
+    % calculate FFTs
     F1 = fft2(I1);
     F2 = fft2(I2);
-    Prod = (F1.*conj(F2))./abs(F1.*F2);
+    
+    % compute the cross-power spectrum, and the corresponding impulse
+    Prod = (F1.*conj(F2))./(abs(F1.*F2) + 1e-15);
     prod = abs(ifft2(Prod));
-    [~,y] = max(sum(prod,1));
-    [~,x] = max(sum(prod,2));
+    impulse = prod/max(prod(:));
+    
+    % interpret the translation from the obtained impulse
+    [~, linearIndexesOfMaxes] = max(prod(:));
+    y = rem(linearIndexesOfMaxes-1,300);
+    x = (linearIndexesOfMaxes-y-1)/300;
+    startx = x;
+    starty = y;
+    if (x > idivide(int32(c1),2))
+       x = x - c1;
+    end
+    if (y > idivide(int32(r1),2))
+       y = y - r1;
+    end
+    
+    % create a yellow circle around the impulse for better visibility
+    visibility = cat(3,impulse,impulse,impulse);
+    visibility = visibility/max(visibility(:));
+    circle = zeros(20,20,3);
+    for i = 1:20
+        for j = 1:20
+            if (abs((i-10)^2 + (j-10)^2 - 81) < 20)
+                circle(i,j,:) = [1,1,0];
+            end
+        end
+    end
+    visibility(starty-9:starty+10, startx-9:startx+10,:) = visibility(starty-9:starty+10, startx-9:startx+10,:) + circle;
 end
 \end{lstlisting}
+\newpage
 \subsection*{2. Image Registration without noise}
 In the noiseless case, the translation was obtained at $t_x = -30$ and $t_y = 70$. \\
 Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility. (Kindly zoom-in the pdf for better clarity)
@@ -75,6 +109,7 @@ Below are the corresponding plots. The 4th plot is just the 3rd plot with a mark
     \end{minipage} \\
 \end{figure}
 \vspace*{40pt}
+\newpage
 \subsection*{3. Image Registration with noise}
 In the noisy case, the translation was obtained at $t_x = -30$ and $t_y = 70$. \\
 Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility.
@@ -113,6 +148,7 @@ $$M_2(\xi ,\theta) = M_1(\xi - d ,\theta-\theta_0)$$
 where,
 $$\xi = log\rho$$
 $$d = loga$$
+This can be again solved using the formula and algorithm used in section I (for translation).
 \subsection*{6. Usage of Code}
 \begin{itemize}
 \item Simply run the \textbf{myMainScript.m}. This will produce and save all the required plots, and print out the translation values in both the pure and noisy case.
