@@ -1,5 +1,6 @@
 %% MyMainScript
 clear;clc;close all;
+rng(1);
 tic;
 %% Your code here
 I = zeros(300,300);
@@ -28,10 +29,8 @@ pause(0.02);
 savefig(1,'../images/noiseless.fig')
 
 
-I = randn(300,300)*20;
-I(50:120,50:100) = 255;
-translated = randn(300,300)*20;
-translated(120:190,20:70) = 255;
+I = I + randn(300,300)*20;
+translated = translated + randn(300,300)*20;
 [x,y, impulse, visibility] = getTranslation(translated, I);
 figure(2)
 tiledlayout(2,2,'TileSpacing','none','Padding','none');
