@@ -51,19 +51,20 @@
 \section*{Question 5}
 \subsection*{1. Code}
 \begin{lstlisting}[language=Matlab]
-function [x,y, impulse, visibility] = getTranslation(I1,I2)
+function [x,y, impulse, visibility, log_fft] = getTranslation(I1,I2)
     [r1,c1] = size(I1);
     [r2,c2] = size(I2);
     assert(r1 == r2);
     assert(c1 == c2);
     
     % calculate FFTs
-    F1 = fft2(I1);
-    F2 = fft2(I2);
+    F1 = fftshift(fft2(I1));
+    F2 = fftshift(fft2(I2));
     
     % compute the cross-power spectrum, and the corresponding impulse
-    Prod = (F1.*conj(F2))./(abs(F1.*F2) + 1e-15);
-    prod = abs(ifft2(Prod));
+    Prod = (F1.*conj(F2))./(abs(F1.*F2) + 1e-50);
+    log_fft = log(1+abs(Prod));
+    prod = abs(ifft2(ifftshift(Prod)));
     impulse = prod/max(prod(:));
     
     % interpret the translation from the obtained impulse
@@ -96,7 +97,7 @@ end
 \newpage
 \subsection*{2. Image Registration without noise}
 In the noiseless case, the translation was obtained at $t_x = -30$ and $t_y = 70$. \\
-Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility. (Kindly zoom-in the pdf for better clarity)
+Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility. (Kindly zoom-in the pdf for better clarity). Assuming the rectangles are vertical, ie, the longer length is vertically aligned.
 \vspace*{65pt}
 \begin{figure}[h!]
     \centering
@@ -106,13 +107,13 @@ Below are the corresponding plots. The 4th plot is just the 3rd plot with a mark
     	\includegraphics[width=1.34\textwidth]{noiseless.png}
     	\caption{Image Registration}
 	    \label{fig:5.1}
-    \end{minipage} \\
+    \end{minipage}    
 \end{figure}
 \vspace*{40pt}
 \newpage
 \subsection*{3. Image Registration with noise}
 In the noisy case, the translation was obtained at $t_x = -30$ and $t_y = 70$. \\
-Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility.
+Below are the corresponding plots. The 4th plot is just the 3rd plot with a marking circle added for better visibility. The rectangles appear a bit gray, because after adding noise, all pixels are scaled down between [0,1], and not clipped above 255. 
 \vspace*{65pt}
 \begin{figure}[h!]
     \centering
@@ -126,11 +127,31 @@ Below are the corresponding plots. The 4th plot is just the 3rd plot with a mark
 \end{figure}
 \vspace*{40pt}
 \newpage
-\subsection*{4. Time Complexity Analysis}
+\subsection*{4. Cross Power Spectrum}
+Here we have attached the images corresponding to the log of the cross power spectrum in both the cases. Precisely, if $f$ is the power spectrum, then we have plotted $log(1+ |f|)$. Naturally, this should be a constant signal of value $log(2)$.
+\begin{figure}[h!]
+    \centering
+    \renewcommand{\thefigure}{5.3 (a)}
+    \begin{minipage}[c][1\width]{0.6\textwidth}
+    	\includegraphics[width=1\textwidth]{log_fft_noiseless.png}
+    	\vspace*{-60pt}
+    	\caption{Log of cross power spectrum without noise}
+	    \label{fig:5.3.a}
+    \end{minipage}
+    \renewcommand{\thefigure}{5.3 (b)}
+    \begin{minipage}[c][1\width]{0.6\textwidth}
+    	\includegraphics[width=1\textwidth]{log_fft_noisy.png}
+    	\vspace*{-60pt}
+    	\caption{Log of cross power spectrum with noise}
+	    \label{fig:5.3.b}
+    \end{minipage}
+\end{figure}
+\vspace*{40pt}
+\subsection*{5. Time Complexity Analysis}
 For an image of size NxN, the FFT algorithm takes $\mathcal{O}(n^2logn)$ (row-wise/column-wise FFT takes $\mathcal{O}(nlogn)$, and this is done for each of the n rows and columns). The next operation of element wise sum and division take $\mathcal{O}(n^2)$, and the inverse fourier transform again takes $\mathcal{O}(n^2logn)$. \\
 Hence the overall time complexity is $\mathcal{O}(n^2logn)$ + $\mathcal{O}(n^2)$ + $\mathcal{O}(n^2logn)$ = $\mathcal{O}(n^2logn)$ \\ \\ 
 On the other hand, the pixel wise comparison will take $\mathcal{O}(n^4)$. Basically, we will compute the translated image for every possible translation combination. For a NxN image, there are a total of N$^2$ translation possibilities. For a given translation, the pixelwise similarity computation will again take $\mathcal{O}(n^2)$. \\ Hence the overall time complexity of the brute force algorithm is $\mathcal{O}(n^4)$
-\subsection*{5. Correcting Rotation}
+\subsection*{6. Correcting Rotation}
 The paper has has broken this into two cases - rotation with and without scaling. \\
 First we consider rotation without scaling. Let $f_2(x,y)$ be the translated and rotated replica of image $f_1(x,y)$, we have
 $$f_2(x,y) = f_1(xcos\theta_0 + ysin\theta_0 - x_0, -xsin\theta_0 + ycos\theta_0 - y_0)$$
@@ -149,7 +170,7 @@ where,
 $$\xi = log\rho$$
 $$d = loga$$
 This can be again solved using the formula and algorithm used in section I (for translation).
-\subsection*{6. Usage of Code}
+\subsection*{7. Usage of Code}
 \begin{itemize}
 \item Simply run the \textbf{myMainScript.m}. This will produce and save all the required plots, and print out the translation values in both the pure and noisy case.
 \end{itemize}

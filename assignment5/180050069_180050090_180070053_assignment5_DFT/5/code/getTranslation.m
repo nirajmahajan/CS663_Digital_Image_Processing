@@ -1,16 +1,17 @@
-function [x,y, impulse, visibility] = getTranslation(I1,I2)
+function [x,y, impulse, visibility, log_fft] = getTranslation(I1,I2)
     [r1,c1] = size(I1);
     [r2,c2] = size(I2);
     assert(r1 == r2);
     assert(c1 == c2);
     
     % calculate FFTs
-    F1 = fft2(I1);
-    F2 = fft2(I2);
+    F1 = fftshift(fft2(I1));
+    F2 = fftshift(fft2(I2));
     
     % compute the cross-power spectrum, and the corresponding impulse
-    Prod = (F1.*conj(F2))./(abs(F1.*F2) + 1e-15);
-    prod = abs(ifft2(Prod));
+    Prod = (F1.*conj(F2))./(abs(F1.*F2) + 1e-50);
+    log_fft = log(1+abs(Prod));
+    prod = abs(ifft2(ifftshift(Prod)));
     impulse = prod/max(prod(:));
     
     % interpret the translation from the obtained impulse
