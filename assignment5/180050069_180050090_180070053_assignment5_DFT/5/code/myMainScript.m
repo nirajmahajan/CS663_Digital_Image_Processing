@@ -31,6 +31,7 @@ savefig(1,'../images/noiseless.fig')
 figure(2);
 imshow(log_fft);
 title('log(1 + cross power spectrum)')
+colormap(jet);
 colorbar;
 saveas(2, '../images/log_fft_noiseless.png')
 pause(0.01)
@@ -62,7 +63,8 @@ savefig(3,'../images/noisy.fig')
 figure(4);
 imshow(log_fft);
 title('log(1 + cross power spectrum) - Noisy')
-colorbar
+colormap(jet);
+colorbar;
 saveas(4, '../images/log_fft_noisy.png')
 pause(0.01)
 savefig(4, '../images/log_fft_noisy.fig')

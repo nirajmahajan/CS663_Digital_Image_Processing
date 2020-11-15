@@ -128,7 +128,7 @@ Below are the corresponding plots. The 4th plot is just the 3rd plot with a mark
 \vspace*{40pt}
 \newpage
 \subsection*{4. Cross Power Spectrum}
-Here we have attached the images corresponding to the log of the cross power spectrum in both the cases. Precisely, if $f$ is the power spectrum, then we have plotted $log(1+ |f|)$. Naturally, this should be a constant signal of value $log(2)$.
+Here we have attached the images corresponding to the log of the cross power spectrum in both the cases. Precisely, if $f$ is the power spectrum, then we have plotted $log(1+ |f|)$. Naturally, this should be a constant signal of value $log(2)$. There are some black spots visible in the power spectrum. These correspond to 0. They arise due to an approximation that we made in the code in section 1, in line 12, where we add $e^{-50}$ to the denominator. On the other hand, due to precision, some points in the numerator are so small, that they reduce the result to 0. Hence, we can see occasional zeros scattered in the plot below.
 \begin{figure}[h!]
     \centering
     \renewcommand{\thefigure}{5.3 (a)}
@@ -137,7 +137,8 @@ Here we have attached the images corresponding to the log of the cross power spe
     	\vspace*{-60pt}
     	\caption{Log of cross power spectrum without noise}
 	    \label{fig:5.3.a}
-    \end{minipage}
+    \end{minipage} \\
+    \vspace*{-60pt}
     \renewcommand{\thefigure}{5.3 (b)}
     \begin{minipage}[c][1\width]{0.6\textwidth}
     	\includegraphics[width=1\textwidth]{log_fft_noisy.png}
@@ -146,7 +147,7 @@ Here we have attached the images corresponding to the log of the cross power spe
 	    \label{fig:5.3.b}
     \end{minipage}
 \end{figure}
-\vspace*{40pt}
+\newpage
 \subsection*{5. Time Complexity Analysis}
 For an image of size NxN, the FFT algorithm takes $\mathcal{O}(n^2logn)$ (row-wise/column-wise FFT takes $\mathcal{O}(nlogn)$, and this is done for each of the n rows and columns). The next operation of element wise sum and division take $\mathcal{O}(n^2)$, and the inverse fourier transform again takes $\mathcal{O}(n^2logn)$. \\
 Hence the overall time complexity is $\mathcal{O}(n^2logn)$ + $\mathcal{O}(n^2)$ + $\mathcal{O}(n^2logn)$ = $\mathcal{O}(n^2logn)$ \\ \\ 
