@@ -20,4 +20,19 @@
 \begin{document}
 \vspace*{-22pt}
 \section*{Question 1}
+\quad Given the image taken when the outside scene is in focus $g_1$, and the image when the reflection off the window is in focus $g_2$, along with the respective blurring kernels $h_1$ and $h_2$, we have \\
+$$g_1 = f_1 + h_2*f_2$$
+$$g_2 = f_2 + h_1*f_1$$
+By applying Fourier transform on these equations, we get,
+$$G_1 = F_1 + H_2F_2$$
+$$G_2 = F_2 + H_1F_1$$
+On further solving the system of linear equations for $F_1$, $F_2$,
+$$F_1 = \frac{G_1 - H_2G_2}{1-H_1H_2}$$
+$$F_2 = \frac{G_2 - H_1G_1}{1-H_1H_2}$$
+Now, to obtain $f_1$ and $f_2$, we simply take the Fourier Inverse Transform of $F_1$ and $F_2$
+$$\boxed{f_1 = \mathcal{F}^{-1}(F_1)}$$
+$$\boxed{f_2 = \mathcal{F}^{-1}(F_2)}$$
+
+\subsection*{Problem in the solution obtained}
+The inherent problem in the formula derived is that the Fourier transforms of the blurring kernels act as low pass filters. So, for low frequencies, $H_1H_2$ will approach 1. If we look at the denominator of the formulae $1 - H_1H_2$, we notice that for low frequencies, the denominator tends to $\infty$. This is will amplify the noise around low frequencies and hence is not ideal.
 \end{document}
