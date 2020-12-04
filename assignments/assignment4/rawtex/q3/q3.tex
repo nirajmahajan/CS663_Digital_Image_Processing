@@ -1,0 +1,91 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin = 1in, top=1.3in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{tabto}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{./images/}}
+\usepackage[font=small,labelfont=bf]{caption}
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small{Shaan Ul Haque(180070053)\\ Samarth Singh (180050090) \\ Niraj Mahajan (180050069)}}
+\lhead{CS-663 Assignment-4 : Question 3}
+\rfoot{Page 3.\thepage}
+ 
+\begin{document}
+\vspace*{-22pt}
+\section*{Question 3}
+
+\subsection*{Part a:} 
+Given a m x n matrix {\bf A},\\
+\begin {itemize}
+\item ${\bf P}={\bf A}^T{\bf A}$ is a n x n matrix\\
+Consider a vector {\bf y} with n elements
+\[{\bf y}^t{\bf Py}={\bf y}^t{\bf A}^T{\bf Ay}=({\bf Ay})^t{\bf Ay}= ||{\bf Ay}||_2^2\geq 0\] 
+Note: $||{\bf x}||_2^2$ is the square of 2-norm of {\bf x}
+
+\item ${\bf Q}={\bf AA}^T$ is a m x m matrix\\
+Consider a vector {\bf z} with m elements
+\[{\bf z}^t{\bf Qz}={\bf z}^t{\bf AA}^T{\bf z}=({\bf A}^T{\bf z})^t{\bf A}^T{\bf z}=||{\bf A}^T{\bf z}||_2^2\geq 0\] 
+
+\item Consider an eigenvector {\bf y}, with n elements and eigenvalue $\lambda_P$, of {\bf P}
+\[{\bf Py}= \lambda_P{\bf y}\] 
+Pre-multiplication of the above equation with ${\bf y}^t$
+\[{\bf y}^t{\bf Py}=\lambda_P{\bf y}^t{\bf y}\]
+Replacing ${\bf y}^t{\bf Py}=||{\bf Ay}||_2^2$ from $1^{st}$ point
+\[\lambda_P=\frac{||{\bf Ay}||_2^2}{||{\bf y}||_2^2}\geq 0\]
+$\therefore$ The eigenvalues of P are non-negative
+
+\item Consider an eigenvector {\bf z}, with m elements and eigenvalue $\lambda_Q$, of {\bf Q}
+\[{\bf Qz}= \lambda_Q{\bf z}\] 
+Pre-multiplication of the above equation with ${\bf z}^t$
+\[{\bf z}^t{\bf Qz}=\lambda_Q{\bf z}^t{\bf z}\]
+Replacing ${\bf z}^t{\bf Qz}=||{\bf A}^T{\bf z}||_2^2$ from $2^{nd}$ point
+\[\lambda_Q=\frac{||{\bf A}^T{\bf z}||_2^2}{||{\bf z}||_2^2}\geq 0\]
+$\therefore$ The eigenvalues of Q are non-negative
+
+\end {itemize}
+\pagebreak
+\subsection*{Part b:}
+\begin{itemize}
+\item Consider an eigenvector {\bf u}, with n elements and eigenvalue $\lambda$, of {\bf P}
+\[{\bf Pu}= \lambda{\bf u}\] 
+\[{\bf A}^T{\bf Au}=\lambda{\bf u}\]
+Pre-multiplication of the above equation with {\bf A}
+\[{\bf AA}^T({\bf Au})=\lambda({\bf Au})\]
+$\therefore$ {\bf Au} is an eigenvector, with m elements and eigenvalue $\lambda$, of ${\bf AA}^T$ 
+
+\item Consider an eigenvector {\bf v}, with m elements and eigenvalue $\mu$, of {\bf Q}
+\[{\bf Qv}= \mu{\bf v}\] 
+\[{\bf AA}^T{\bf v}=\mu{\bf v}\]
+Pre-multiplication of the above equation with ${\bf A}^T$
+\[{\bf A}^T{\bf A}({\bf A}^T{\bf v})=\mu({\bf A}^T{\bf v})\]
+$\therefore$ ${\bf A}^T{\bf v}$ is an eigenvector, with n elements and eigenvalue $\mu$, of ${\bf A}^T{\bf A}$ 
+
+\end{itemize}
+
+\subsection*{Part c:}
+Consider an eigenvector ${\bf v}_i$, with m elements and eigenvalue $\lambda_i$, of {\bf Q} 
+\[{\bf Qv}_i=\lambda_i{\bf v}_i\]
+\[{\bf AA}^T{\bf v}_i=\lambda_i{\bf v}_i\]
+Consider a vector \(\displaystyle {\bf u}_i=\frac{{\bf A}^T{\bf v}_i}{||{\bf A}^T{\bf v}_i||_2}\) 
+\[{\bf Au}_i=\frac{\lambda_i}{||{\bf A}^T{\bf v}_i||_2}{\bf v}_i\]
+Replacing \(\displaystyle \gamma_i=\frac{\lambda_i}{||{\bf A}^T{\bf v}_i||_2}\) in the above equation
+\[{\bf Au}_i=\gamma_i{\bf v}_i\]
+$\gamma_i$ is non-negative because $\lambda_i\geq0$ (proved in Part a $3^{rd}$ point)\\
+$\gamma_i$ is real because {\bf A} and ${\bf v}_i$ are real-valued (given in question)\\
+$\therefore$ There exist a real, non-negative $\gamma_i$ such that ${\bf Au}_i=\gamma_i{\bf v}_i$ 
+\pagebreak
+\subsection*{Part d:}
+
+\[{\bf A}={\bf U\Gamma V}^T=\sum_{i=1}^m {\bf \Gamma}_{ii}{\bf v}_i{\bf u}_i^t\]
+
+\end{document}
