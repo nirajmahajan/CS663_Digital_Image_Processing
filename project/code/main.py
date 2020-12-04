@@ -9,10 +9,15 @@ import sys
 import time
 import random
 
-from classes import PCA
+from classes import PCA, FLD
 from utils import *
 
 seed = 1
 random.seed(seed)
 os.environ['PYTHONHASHSEED'] = str(seed)
 np.random.seed(seed)
+
+
+a = FLD(4)
+data = np.random.randn(500,4)
+a.fit(data, np.arange(500)//50)

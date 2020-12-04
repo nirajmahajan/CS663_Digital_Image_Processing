@@ -62,7 +62,7 @@ class FLD(object):
 		MUi = []
 		Ni = []
 		for i in range(self.c):
-			indices = labels == c
+			indices = labels == i
 			classwise_X.append(X[indices,:])
 			Ni.append(indices.sum())
 			MUi.append(classwise_X[i].mean(0).reshape(-1,1))
@@ -78,7 +78,7 @@ class FLD(object):
 			self.Sw += (Xi_norm.T@Xi_norm)
 
 		# get the generalised eigvals
-		self.eigvals_gen, self.W = scipy.linalg.eigh(Sb,Sw,eigvals_only=False)
+		self.eigvals_gen, self.W = scipy.linalg.eigh(self.Sb,self.Sw,eigvals_only=False)
 
 		indices = np.argsort(self.eigvals_gen)[::-1]
 		self.eigvals_gen_all = self.eigvals_gen[indices]
