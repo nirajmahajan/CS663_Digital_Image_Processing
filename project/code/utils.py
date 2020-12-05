@@ -11,6 +11,7 @@ import random
 
 from classes import FischerfacePredictor,EigenfacePredictor,EigenfacePredictorIllum
 
+# first parameter should be the number of classes
 def getAllErrors(Xtrain, Ytrain, Xtest, Ytest, parameters = [15,30,30]):
 	fischer_model = FischerfacePredictor(parameters[0])
 	fischer_model.train(Xtrain, Ytrain)
