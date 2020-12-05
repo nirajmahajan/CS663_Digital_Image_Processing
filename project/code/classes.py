@@ -9,7 +9,7 @@ class PCA(object):
 		super(PCA, self).__init__()
 		self.n_components = n_components
 
-	def fit(self, X):
+	def fit(self, X, illum = False):
 		self.mean = X.mean(0)
 		self.insize = X.shape[1]
 		n_data = X.shape[0]
@@ -19,7 +19,10 @@ class PCA(object):
 		[eigvals, eigvecs] = np.linalg.eigh(mat)
 		indices = np.argsort(eigvals)[::-1]
 		self.eigvals_all = eigvals[indices]
-		indices = indices[:self.n_components]
+		if illum:
+			indices = indices[3:self.n_components+3]
+		else:
+			indices = indices[:self.n_components]
 		eigvals = eigvals[indices]
 		eigvecs_big = X.T@eigvecs
 		norms = (eigvecs_big**2).sum(0).reshape(1,-1) ** 0.5
@@ -137,6 +140,49 @@ class FischerfacePredictor(object):
 		diff = ((temp_train - temp_test)**2).sum(2)
 		min_pos = np.argmin(diff, 0)
 		return self.train_labels[min_pos]
+
+class EigenfacePredictor(object):
+	"""docstring for EigenfacePredictor"""
+	def __init__(self, out_dim):
+		super(EigenfacePredictor, self).__init__()
+		self.out_dim = out_dim
+
+	def train(self, X, labels):
+		self.eigenfaces_model = PCA(n_components = self.out_dim)
+		self.eigenfaces_model.fit(X)
+		self.train_embeddings = self.eigenfaces_model.transform(X)
+		self.train_labels = labels
+
+	def test(self, X):
+		# X mxd -> mxk -> 1xmxk
+		temp_test = np.expand_dims(self.eigenfaces_model.transform(X), 0)
+		# X nxd -> nxk -> nx1xk
+		temp_train = np.expand_dims(self.train_embeddings, 1)
+		diff = ((temp_train - temp_test)**2).sum(2)
+		min_pos = np.argmin(diff, 0)
+		return self.train_labels[min_pos]
+
+class EigenfacePredictorIllum(object):
+	"""docstring for EigenfacePredictorIllum"""
+	def __init__(self, out_dim):
+		super(EigenfacePredictorIllum, self).__init__()
+		self.out_dim = out_dim
+
+	def train(self, X, labels):
+		self.eigenfaces_model = PCA(n_components = self.out_dim)
+		self.eigenfaces_model.fit(X, illum = True)
+		self.train_embeddings = self.eigenfaces_model.transform(X)
+		self.train_labels = labels
+
+	def test(self, X):
+		# X mxd -> mxk -> 1xmxk
+		temp_test = np.expand_dims(self.eigenfaces_model.transform(X), 0)
+		# X nxd -> nxk -> nx1xk
+		temp_train = np.expand_dims(self.train_embeddings, 1)
+		diff = ((temp_train - temp_test)**2).sum(2)
+		min_pos = np.argmin(diff, 0)
+		return self.train_labels[min_pos]
+
 
 
 
