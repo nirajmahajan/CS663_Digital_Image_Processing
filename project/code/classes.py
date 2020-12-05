@@ -78,7 +78,8 @@ class FLD(object):
 			self.Sw += (Xi_norm.T@Xi_norm)
 
 		# get the generalised eigvals
-		self.eigvals_gen, self.W = scipy.linalg.eigh(self.Sb,self.Sw,eigvals_only=False)
+		# self.eigvals_gen, self.W = scipy.linalg.eigh(self.Sb,self.Sw,eigvals_only=False,subset_by_value=[-np.inf, 10])
+		self.eigvals_gen, self.W = scipy.linalg.eig(self.Sb,self.Sw)
 
 		indices = np.argsort(self.eigvals_gen)[::-1]
 		self.eigvals_gen_all = self.eigvals_gen[indices]
@@ -112,8 +113,8 @@ class Fischerfaces(object):
 		lowerX = self.pca.fit_transform(X)
 		self.fld.fit(lowerX, labels)
 
-	def tranform(self, X):
-		return self.fld.tranform(self.pca.transform(X))
+	def transform(self, X):
+		return self.fld.transform(self.pca.transform(X))
 
 
 class FischerfacePredictor(object):
@@ -134,9 +135,8 @@ class FischerfacePredictor(object):
 		# X nxd -> nxk -> nx1xk
 		temp_train = np.expand_dims(self.train_embeddings, 1)
 		diff = ((temp_train - temp_test)**2).sum(2)
-		return np.argmin(diff, 0)
-
-		
+		min_pos = np.argmin(diff, 0)
+		return self.train_labels[min_pos]
 
 
 
