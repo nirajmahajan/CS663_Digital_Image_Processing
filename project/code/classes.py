@@ -91,7 +91,7 @@ class FLD(object):
 		self.W = self.W[:,indices]
 
 	def transform(self, X):
-		return X@self.W
+		return (X-self.mu_global.reshape(1,-1))@self.W
 
 
 class Fischerfaces(object):
