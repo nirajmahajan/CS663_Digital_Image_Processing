@@ -9,7 +9,7 @@ import sys
 import time
 import random
 
-from classes import PCA, FLD
+from classes import FischerfacePredictor
 from utils import *
 
 seed = 1
@@ -18,6 +18,10 @@ os.environ['PYTHONHASHSEED'] = str(seed)
 np.random.seed(seed)
 
 
-a = FLD(4)
-data = np.random.randn(500,4)
-a.fit(data, np.arange(500)//50)
+###### following is the usage
+# a = FischerfacePredictor(c-1)
+# data = DATA
+# labels = np.arange(500)//50
+# a.train(data, labels)
+
+# prediction = a.test(data)

@@ -90,4 +90,55 @@ class FLD(object):
 		return X@self.W
 
 
+class Fischerfaces(object):
+	"""docstring for Fischerfaces"""
+	def __init__(self, out_dim = 1):
+		super(Fischerfaces, self).__init__()
+		self.out_dim = out_dim
+
+	def fit(self, X, labels):
+		self.in_dim = X.shape[1]
+		self.n_data = X.shape[0]
+		self.c = labels.max()+1
+		# error check
+		for i in range(self.c):
+			if not i in labels:
+				print("Class {} not present in labels".format(i), flush = True)
+				os._exit(-1)
+
+		self.pca = PCA(n_components = self.n_data-self.c)
+		self.fld = FLD(out_dim = self.out_dim)
+		
+		lowerX = self.pca.fit_transform(X)
+		self.fld.fit(lowerX, labels)
+
+	def tranform(self, X):
+		return self.fld.tranform(self.pca.transform(X))
+
+
+class FischerfacePredictor(object):
+	"""docstring for FischerfacePredictor"""
+	def __init__(self, out_dim):
+		super(FischerfacePredictor, self).__init__()
+		self.out_dim = out_dim
+
+	def train(self, X, labels):
+		self.fischerfaces_model = Fischerfaces(out_dim = self.out_dim)
+		self.fischerfaces_model.fit(X, labels)
+		self.train_embeddings = self.fischerfaces_model.transform(X)
+		self.train_labels = labels
+
+	def test(self, X):
+		# X mxd -> mxk -> 1xmxk
+		temp_test = np.expand_dims(self.fischerfaces_model.transform(X), 0)
+		# X nxd -> nxk -> nx1xk
+		temp_train = np.expand_dims(self.train_embeddings, 1)
+		diff = ((temp_train - temp_test)**2).sum(2)
+		return np.argmin(diff, 0)
+
+		
+
+
+
+		
 		
