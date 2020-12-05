@@ -9,27 +9,31 @@ import sys
 import time
 import random
 
-from classes import FischerfacePredictor,EigenfacePredictor,EigenfacePredictorIllum
-from utils import *
+from utils import getAllErrors, getAllErrorsLeavingOne
+from dataloaders import YaleDataset
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--path', type = str, default = "../datasets/yalefaces/")
+args = parser.parse_args()
+
 
 seed = 1
 random.seed(seed)
 os.environ['PYTHONHASHSEED'] = str(seed)
 np.random.seed(seed)
 
+dataset = YaleDataset(args.path)
 
-###### following is the usage
-# a = FischerfacePredictor(c-1)
-# data = DATA
-# labels = np.arange(500)//50
-# a.train(data, labels)
+fischer_error, eigen_error, eigen_illu_error = getAllErrors(dataset.Xtrain, dataset.Ytrain, dataset.Xtest, dataset.Ytest)
 
-# prediction = a.test(data)
+print("Error Rates:")
+print("Fischer Predictor                            --> {}".format(100*(fischer_error)))
+print("Eigen Predictor                              --> {}".format(100*(eigen_error)))
+print("Eigen Predictor (without top 3 eigvectors)   --> {}".format(100*(eigen_illu_error)))
 
-###### following is the usage
-a = EigenfacePredictor(9)
-data = np.random.randn(500,15)
-labels = np.arange(500)//50
-a.train(data, labels)
 
-prediction = a.test(data)
+print("\nGlasses Predictor (Using leaving one out method):")
+fischer_error, eigen_error, eigen_illu_error = getAllErrorsLeavingOne(dataset.X_glasses, dataset.Y_glasses)
+print("Fischer Predictor                            --> {}".format(100*(fischer_error)))
+print("Eigen Predictor                              --> {}".format(100*(eigen_error)))
+print("Eigen Predictor (without top 3 eigvectors)   --> {}".format(100*(eigen_illu_error)))
