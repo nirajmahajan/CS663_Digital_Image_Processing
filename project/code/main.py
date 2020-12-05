@@ -9,7 +9,7 @@ import sys
 import time
 import random
 
-from classes import FischerfacePredictor
+from classes import FischerfacePredictor,EigenfacePredictor,EigenfacePredictorIllum
 from utils import *
 
 seed = 1
@@ -27,7 +27,7 @@ np.random.seed(seed)
 # prediction = a.test(data)
 
 ###### following is the usage
-a = FischerfacePredictor(9)
+a = EigenfacePredictor(9)
 data = np.random.randn(500,15)
 labels = np.arange(500)//50
 a.train(data, labels)
