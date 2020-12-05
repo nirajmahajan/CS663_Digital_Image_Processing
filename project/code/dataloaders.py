@@ -28,6 +28,7 @@ class YaleDataset(object):
 		test_counter = 0
 		choice_counters = np.zeros(15).astype(np.int32)
 		trainchoices = np.zeros((15,11)).astype(np.int32)
+		indices_glasses = []
 		for i in range(15):
 			trainchoices[i,np.random.choice(11,7,replace = False)] = 1
 
@@ -54,8 +55,25 @@ class YaleDataset(object):
 			if "noglasses" in filename:
 				self.X_glasses[glass_counter,:] = image.reshape(-1)
 				self.Y_glasses[glass_counter] = 0
+				indices_glasses.append(personid)
 				glass_counter += 1
 			elif "glasses" in filename:
 				self.X_glasses[glass_counter,:] = image.reshape(-1)
 				self.Y_glasses[glass_counter] = 1
+				indices_glasses.append(personid)
 				glass_counter += 1
+
+		indices = np.argsort(self.Ytrain)
+		self.Ytrain = self.Ytrain[indices]
+		self.Xtrain = self.Xtrain[indices,:]
+
+		indices = np.argsort(self.Ytest)
+		self.Ytest = self.Ytest[indices]
+		self.Xtest = self.Xtest[indices,:]
+
+		indices = np.argsort(np.array(indices_glasses))
+		self.Y_glasses = self.Y_glasses[indices]
+		self.X_glasses = self.X_glasses[indices,:]
+
+
+

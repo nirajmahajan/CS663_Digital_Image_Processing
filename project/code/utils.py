@@ -38,13 +38,13 @@ def getAllErrorsLeavingOne(X, Y, parameters = [1,10,10]):
 	fischer_error = 0
 	eigen_error = 0
 	eigen_illu_error = 0
-	for i in range(Y.shape[0]):
-		tempX = np.delete(X,i,0)
-		tempY = np.delete(Y,i,0)
-		fe, ee, eie = getAllErrors(tempX, tempY, X[i,:].reshape(1,-1), np.array([Y[i]]), parameters = parameters)
-		fischer_error += fe
-		eigen_error += ee
-		eigen_illu_error += eie
+	for i in range(Y.shape[0]//2):
+		tempX = np.delete(X,[2*i,(2*i)+1],0)
+		tempY = np.delete(Y,[2*i,(2*i)+1],0)
+		fe, ee, eie = getAllErrors(tempX, tempY, X[2*i:(2*i)+1,:], Y[2*i:(2*i)+1], parameters = parameters)
+		fischer_error += fe*2
+		eigen_error += ee*2
+		eigen_illu_error += eie*2
 
 	fischer_error /= Y.shape[0]
 	eigen_error /= Y.shape[0]
