@@ -1,6 +1,3 @@
-import numpy as np
-import scipy
-import sklearn
 from sklearn.decomposition import PCA as PP
 import matplotlib.pyplot as plt
 import os
@@ -9,27 +6,22 @@ import sys
 import time
 import random
 
-from classes import FischerfacePredictor,EigenfacePredictor,EigenfacePredictorIllum
-from utils import *
+from utils import getAllErrors, getAllErrorsLeavingOne
+from dataloaders import YaleDataset
 
-seed = 1
-random.seed(seed)
-os.environ['PYTHONHASHSEED'] = str(seed)
-np.random.seed(seed)
+parser = argparse.ArgumentParser()
+parser.add_argument('--path', type = str, default = "../datasets/yaleB/")
+parser.add_argument('--seed', type = int, default = 0)
+args = parser.parse_args()
 
+random.seed(args.seed)
+os.environ['PYTHONHASHSEED'] = str(args.seed)
+np.random.seed(args.seed)
 
-###### following is the usage
-# a = FischerfacePredictor(c-1)
-# data = DATA
-# labels = np.arange(500)//50
-# a.train(data, labels)
+dataset = YaleDataset(args.path)
 
-# prediction = a.test(data)
-
-###### following is the usage
-a = EigenfacePredictor(9)
-data = np.random.randn(500,15)
-labels = np.arange(500)//50
-a.train(data, labels)
-
-prediction = a.test(data)
+fischer_error, eigen_error, eigen_illu_error = getAllErrors(dataset.Xtrain, dataset.Ytrain, dataset.Xtest, dataset.Ytest)
+print("Error Rates:")
+print("Fischer Predictor                            --> {}".format(100*(fischer_error)))
+print("Eigen Predictor                              --> {}".format(100*(eigen_error)))
+print("Eigen Predictor (without top 3 eigvectors)   --> {}".format(100*(eigen_illu_error)))
