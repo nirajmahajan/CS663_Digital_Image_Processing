@@ -23,7 +23,7 @@ np.random.seed(args.seed)
 
 dataset = YaleBDataset(args.path)
 
-fischer_error, eigen_error, eigen_illu_error = getAllErrors(dataset.Xtrain, dataset.Ytrain, dataset.Xtest, dataset.Ytest)
+fischer_error, eigen_error, eigen_illu_error = getAllErrors(dataset.Xtrain, dataset.Ytrain, dataset.Xtest, dataset.Ytest, parameters = [38,50,50])
 print("Error Rates:")
 print("Fischer Predictor                            --> {}".format(100*(fischer_error)))
 print("Eigen Predictor                              --> {}".format(100*(eigen_error)))
