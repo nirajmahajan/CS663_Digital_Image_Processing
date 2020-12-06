@@ -26,9 +26,9 @@ model_eigen_illum = EigenfacePredictorIllum(19)
 model_eigen_illum.train(tr, tr_c)
 prediction_eigen_illum = model_eigen_illum.test(ts)
 
-print(np.sum(1*(prediction_fischer==ts_c))/ts_c.size)
-print(np.sum(1*(prediction_eigen==ts_c))/ts_c.size)
-print(np.sum(1*(prediction_eigen_illum==ts_c))/ts_c.size)
+print(1 - np.sum(1*(prediction_fischer==ts_c))/ts_c.size)
+print(1 - np.sum(1*(prediction_eigen==ts_c))/ts_c.size)
+print(1 - np.sum(1*(prediction_eigen_illum==ts_c))/ts_c.size)
 
 
 
