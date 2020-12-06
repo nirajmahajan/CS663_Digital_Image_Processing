@@ -27,20 +27,22 @@ def loadDataset(img_folder):
     np.random.seed(0)
 
     for dir1 in os.listdir(img_folder):
-    	choice = np.random.permutation(list(range(0, 32)))
-    	i=0
-    	for file in os.listdir(os.path.join(img_folder, dir1)):
+        choice = np.random.permutation(list(range(0, 32)))
+        i=0
+        if not os.path.isdir(os.path.join(img_folder, dir1)):
+            continue
+        for file in os.listdir(os.path.join(img_folder, dir1)):
             image_path = os.path.join(img_folder, dir1,  file)
             image, img_size, img_max = readpgm(image_path)
             image = np.resize(image,(1, 15360))
             image = image.astype('float32')
             if choice[i]%3==0:
-            	test_data = np.concatenate((test_data, image), axis = 0)
-            	test_class.append(c)
+                test_data = np.concatenate((test_data, image), axis = 0)
+                test_class.append(c)
             else:
-            	train_data = np.concatenate((train_data, image), axis = 0)
-            	train_class.append(c)
+                train_data = np.concatenate((train_data, image), axis = 0)
+                train_class.append(c)
             i=i+1
-    	c=c+1
-    	
+        c=c+1
+        
     return train_data[1:] , np.array(train_class), test_data[1:] , np.array(test_class)
