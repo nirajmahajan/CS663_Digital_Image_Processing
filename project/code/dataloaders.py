@@ -91,7 +91,7 @@ class YaleBDataset(object):
 		choice_counters = np.zeros(38).astype(np.int32)
 		trainchoices = np.zeros((38,65)).astype(np.int32)
 		
-		for i in range(15):
+		for i in range(38):
 			trainchoices[i,np.random.choice(65,39,replace = False)] = 1
 		
 		for subdir in os.listdir(self.path):
@@ -101,7 +101,8 @@ class YaleBDataset(object):
 					continue
 				fullpath = os.path.join(subpath, filename)
 				image = plt.imread(fullpath)
-				personid = int(subdir[4:])-1
+
+				personid = int(subdir[5:])-1
 				personid -= (personid>13)
 				if trainchoices[personid, choice_counters[personid]] == 1:
 					# train

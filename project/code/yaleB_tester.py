@@ -1,3 +1,6 @@
+import numpy as np
+import scipy
+import sklearn
 from sklearn.decomposition import PCA as PP
 import matplotlib.pyplot as plt
 import os
@@ -7,7 +10,7 @@ import time
 import random
 
 from utils import getAllErrors, getAllErrorsLeavingOne
-from dataloaders import YaleDataset
+from dataloaders import YaleBDataset
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--path', type = str, default = "../datasets/yaleB/")
@@ -18,7 +21,7 @@ random.seed(args.seed)
 os.environ['PYTHONHASHSEED'] = str(args.seed)
 np.random.seed(args.seed)
 
-dataset = YaleDataset(args.path)
+dataset = YaleBDataset(args.path)
 
 fischer_error, eigen_error, eigen_illu_error = getAllErrors(dataset.Xtrain, dataset.Ytrain, dataset.Xtest, dataset.Ytest)
 print("Error Rates:")
