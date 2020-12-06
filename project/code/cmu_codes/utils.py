@@ -24,6 +24,7 @@ def loadDataset(img_folder):
     test_data = np.zeros((1, 15360))
     test_class = []
     c = 0 
+    np.random.seed(0)
 
     for dir1 in os.listdir(img_folder):
     	choice = np.random.permutation(list(range(0, 32)))
